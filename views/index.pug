@@ -2,4 +2,8 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Добро пожаловать в #{title}
+  ul
+  each branch, index in branches
+    li
+      a(href='branch/'+branch)= branch

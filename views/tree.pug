@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 Tree in #{branch}
+  ul
+  each node in tree
+    li
+      if (node.type === 'tree')
+        a(href=`/tree/${branch}/${commit}/path/${node.name}`)= node.name
+      if (node.type === 'blob')
+        a(href=`/tree/${branch}/${commit}/file/${node.name}`)= node.name

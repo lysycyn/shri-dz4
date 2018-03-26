@@ -1,0 +1,40 @@
+sudo: false
+language: node_js
+node_js:
+- 8
+
+before_script:
+- npm i
+
+script:
+- npm start
+
+cache:
+  directories:
+  - node_modules
+
+aliases:
+  deploy: &deploy
+    provider: heroku
+    api_key:
+      secure: PaCqsCayAXw0E6bkhTvJQWeZ9pw4dtlFBLjBKBZNqZlEBGCJtsCD5KchG/YIJXIAhD6jelHNh4IjesTvhKwzQBf7e8SDJjUkUvDh3/zdV9Kpx4IOdBSDeEXfOeN4Y2T1V5kXHsfJghNVsj9nXNMpQgDs2mQmCiKJytO3JvUnG3MEW3eL6RQs8P1YgkDDEoH3kUw5SnjAu/9MTJet1DKz+wkne70aI0Ef0ToSv5oE1nEbHUd9AIw2xI45CjLAVpeDcJco1aNMI5fnRu5QaKlRsT/9v14vHdbFP102s7VDzJZCS2ijOZ5Drb9+7A3SIDN4Fl40lBVhBR3l8v3uv/I6aZJAt4uOtwcTmv7mbeFObWTR8Hb5m54ORyF6NQIn3bh5ql/jf0NysC7ogsa/wMGoKrKeXYiUX92h5pUbqhWHH+V8Da+0olKel+pft0kzG1YcpDZXtnKqBR01zWt+ESNXkyMMAsVTShYe8UdWrV0Tk205kC+hdBWdk772uc2X+l0eGJVFiS5tvoCEpQ8DVmEvA6a1+B8c/mKDNKlozUBVlNd6e6BDNJuNpW76AkOsn49ugKMnSpqXD5DG3lkU9cBfPzfTwbXWeUNonpIhuFEmP+URrIIEuYGFIIJVHYpSa/sM+G6uXQUzucErFjmKbE4BIdc+OIP6ZhmxthZ5zDoHhFI=
+      skip_cleanup: true
+
+jobs:
+  include:
+    - stage: Deploy (development)
+      if: tag IS blank
+      deploy:
+        <<: *deploy
+        app: shri-dz4-dev
+        on:
+          all_branches: true
+
+    - stage: Deploy (production)
+      if: tag IS present
+      deploy:
+        <<: *deploy
+        app: shri-dz4-product
+        on:
+          tags: true
+          all_branches: true
