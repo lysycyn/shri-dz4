@@ -1,0 +1,10 @@
+@import 'var.css';
+
+body {
+    padding: 50px;
+    font: $font;
+}
+
+a {
+    color: $blue;
+}

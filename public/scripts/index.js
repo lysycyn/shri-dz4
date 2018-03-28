@@ -1,0 +1,2 @@
+webpackJsonp([0],[function(n,o,c){"use strict";Object.defineProperty(o,"__esModule",{value:!0});c(1);var s=c(3),t=(c.n(s),c(4)),e=(c.n(t),c(5));c.n(e);console.log("let's do it")},function(n,o,c){"use strict";var s=c(2);c.n(s);console.log("run scripts/index.js")},function(n,o){console.log("run srcipts/script1.js")},function(n,o){},function(n,o){},function(n,o,c){n.exports=c.p+"./favicon.ico"}],[0]);
+//# sourceMappingURL=index.js.map
