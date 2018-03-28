@@ -1,63 +1,52 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+
+const router = express.Router();
 const makeExec = require('../utils/makeExec');
+const { getFileNameFromPath, getTree, getBreadcrumbs } = require('../utils/helpers');
 
-router.get('/:branch/:commit/path/:path?', function(req, res, next) {
-    const { branch, commit, path } = req.params;
+/**
+ * Роутер для отображения файлов, директорий и просмотра содержимого файла
+ * По умолчанию показывается содержимое корня репозитория.
+ * В зависимости от параматра path в ссылке будет отображаться содержимое соответствующей директории
+ * Для отображения файла (Используется view file.pug) в ссылке выставляется флаг file в query
+ */
+router.get('/:branch/:commit/:path?', (req, res) => {
+  const { branch, commit, path } = req.params;
+  const isFile = req.query.file === '';
 
-    if (path) {
-      console.log('OK');
-      makeExec(`git ls-tree ${commit} ${path}/`).then((data) => {
-        console.log(data);
-        // const tree = data.split('\n').slice(0, -1).map((row) => {
-        //     const rowSplit = row.split(/[\s+,\t+]/);
-        //     return {
-        //       'type': rowSplit[1],
-        //       'name': rowSplit[3],
-        //     }
-        // });
-        // console.log(tree);
-        // return res.render('tree', { branch, tree });
-      }).catch((e) => {
-        console.log(e);
+  // если выставлен флаг file, то отобразить вьюху file
+  // если в параметрах урла содержится путь до поддериктории,
+  // вывести её содержимое и соответствующие крошки
+  // По умолчанию отобразить файлы и директории корня репозитория
+  if (isFile) {
+    makeExec(`git show ${branch}:${path} | cat`).then((data) => {
+      const decodePath = decodeURIComponent(path);
+      const fileName = getFileNameFromPath(decodePath);
+      const breadcrumbs = getBreadcrumbs(decodePath).slice(0, -1);
+      res.render('file', {
+        branch, commit, fileName, data, breadcrumbs,
       });
-    }
-    else {
-      makeExec(`git ls-tree ${commit}`).then((data) => {
-        console.log(data);
-        const tree = data.split('\n').slice(0, -1).map((row) => {
-            const rowSplit = row.split(/[\s+,\t+]/);
-            return {
-              'type': rowSplit[1],
-              'name': rowSplit[3],
-            }
-        });
-        console.log(tree);
-        res.render('tree', { branch, tree, commit });
+    });
+  } else if (path) {
+    makeExec(`git ls-tree ${commit} ${decodeURIComponent(path)}/`).then((data) => {
+      const tree = getTree(data);
+      const breadcrumbs = getBreadcrumbs(path);
+      res.render('tree', {
+        branch, tree, breadcrumbs, commit,
       });
-    }
-
-
-    // if (file) {
-    //     return res.render('preview', {
-    //         branch,
-    //         breadCrumbs: await getBreadCrumbs(branch, file),
-    //         fileContent: await getFileContent(file),
-    //     });
-    // }
-    //
-    // const fileHash = path || commit;
-    // const breadCrumbs = path ? await getBreadCrumbs(commit, fileHash) : null;
-    //
-    // return res.render('files', {
-    //     branch,
-    //     breadCrumbs,
-    //     commit: {
-    //         name: await getCommitName(commit),
-    //         hash: commit,
-    //     },
-    //     files: await getFiles(fileHash),
-    // });
+    }).catch((e) => {
+      console.error(e); // eslint-disable-line
+    });
+  } else {
+    makeExec(`git ls-tree ${commit}`).then((data) => {
+      const tree = getTree(data);
+      res.render('tree', {
+        branch, tree, commit,
+      });
+    }).catch((e) => {
+      console.error(e); // eslint-disable-line
+    });
+  }
 });
 
 module.exports = router;

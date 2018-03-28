@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{fileName}
+  div.breadcrumbs
+    a.breadcrumbs__link(href='/') branches
+    a.breadcrumbs__link(href=`/branch/${encodeURIComponent(branch)}`) branch "#{branch}"
+    if (breadcrumbs)
+      each breadcrumb in breadcrumbs
+        a.breadcrumbs__link(href=`/tree/${encodeURIComponent(branch)}/${commit}/${breadcrumb.path}`)= breadcrumb.name
+    a.breadcrumbs__link #{fileName}
+  p #{data}

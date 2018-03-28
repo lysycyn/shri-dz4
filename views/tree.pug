@@ -1,11 +1,17 @@
 extends layout
 
 block content
-  h1 Tree in #{branch}
+  h1 Tree in branch #{branch}
+  div.breadcrumbs
+    a.breadcrumbs__link(href='/') branches
+    a.breadcrumbs__link(href=`/branch/${branch}`) branch "#{branch}"
+    if (breadcrumbs)
+      each breadcrumb in breadcrumbs
+        a.breadcrumbs__link(href=`/tree/${encodeURIComponent(branch)}/${commit}/${breadcrumb.path}`)= breadcrumb.name
   ul
   each node in tree
     li
       if (node.type === 'tree')
-        a(href=`/tree/${branch}/${commit}/path/${node.name}`)= node.name
+        a(href=`/tree/${encodeURIComponent(branch)}/${commit}/${encodeURIComponent(node.path)}`)= node.name
       if (node.type === 'blob')
-        a(href=`/tree/${branch}/${commit}/file/${node.name}`)= node.name
+        a(href=`/tree/${encodeURIComponent(branch)}/${commit}/${encodeURIComponent(node.path)}?file`)= node.name

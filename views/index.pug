@@ -6,4 +6,4 @@ block content
   ul
   each branch, index in branches
     li
-      a(href='branch/'+branch)= branch
+      a(href=`branch/${encodeURIComponent(branch)}`)= branch
