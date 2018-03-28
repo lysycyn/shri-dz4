@@ -12,8 +12,9 @@ router.get('/:branch', (req, res) => {
 
   makeExec(`git log --pretty=format:"%h|%ad|%an|%s" --date=short ${decodeURIComponent(branch)}`)
     .then((data) => {
+      const title = 'Commits';
       const commits = getCommits(data);
-      res.render('branch', { branch, commits });
+      res.render('branch', { title, branch, commits });
     });
 });
 

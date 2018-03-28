@@ -12,8 +12,9 @@ const { getBranches } = require('../utils/helpers');
 router.get('/', (req, res) => {
   makeExec('git branch').then((data) => {
     const branches = getBranches(data);
-    const title = config.repo.slice(config.repo.lastIndexOf('/') + 1);
-    res.render('index', { title, branches });
+    const title = 'Branches';
+    const h1 = config.repo.slice(config.repo.lastIndexOf('/') + 1);
+    res.render('index', { title, h1, branches });
   });
 });
 

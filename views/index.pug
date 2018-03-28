@@ -1,9 +1,9 @@
 extends layout
 
 block content
-  h1= title
-  p Добро пожаловать в #{title}
-  ul
-  each branch, index in branches
-    li
-      a(href=`branch/${encodeURIComponent(branch)}`)= branch
+  h1= h1
+  p Список веток:
+  ul.branches-list
+    each branch, index in branches
+      li
+        a.branches-list__item(href=`branch/${encodeURIComponent(branch)}`)= branch
