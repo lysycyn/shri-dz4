@@ -1,5 +1,6 @@
 postcss.config.js
 webpack.config.js
+config.js
 node_modules
 webpack
 public
