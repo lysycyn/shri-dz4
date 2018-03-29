@@ -1,0 +1,11 @@
+@import 'var.css';
+
+.commits-list {
+  list-style: none;
+  border-top: 1px solid grey;
+}
+
+.commits-list__item {
+  margin-bottom: 15px;
+  font-size: 14px;
+}

@@ -11,7 +11,7 @@ const getFileNameFromPath = file => file.indexOf('/') !== -1 ? file.split('/').s
  * @param {string} data
  * @returns {array[string]}
  */
-const getBranches = data =>
+const getBranchesFromString = data =>
   data.split('\n').slice(0, -1)
     .map(branch => branch.toString().replace('*', '').trim());
 
@@ -25,11 +25,11 @@ const getBranches = data =>
  * @param {string} data
  * @returns {array[{hash, data, author, message}]}
  */
-const getCommits = data =>
-  data.replace('*', '').split('\n').map((commit) => {
+const getCommitsFromString = data =>
+  data.split('\n').map((commit) => {
     const commitSplit = commit.split('|');
     return {
-      hash: commitSplit[0],
+      hash: commitSplit[0].replace('*', '').trim(),
       date: commitSplit[1],
       author: commitSplit[2],
       message: commitSplit[3],
@@ -45,7 +45,7 @@ const getCommits = data =>
  * @param {string} data
  * @returns {array[{type,path,name}]}
  */
-const getTree = data =>
+const getTreeFromString = data =>
   data.split('\n').slice(0, -1).map((row) => {
     const rowSplit = row.split(/[\s+,\t+]/);
 
@@ -64,6 +64,10 @@ const getTree = data =>
  */
 const getBreadcrumbs = (path) => {
   const breadcrumbs = [];
+  breadcrumbs.push({
+    path: '',
+    name: '/',
+  });
   let breadcrumb = '';
   path.toString().split('/').map((part) => {
     breadcrumb += part;
@@ -78,8 +82,8 @@ const getBreadcrumbs = (path) => {
 
 module.exports = {
   getFileNameFromPath,
-  getBranches,
-  getCommits,
-  getTree,
+  getBranchesFromString,
+  getCommitsFromString,
+  getTreeFromString,
   getBreadcrumbs,
 };

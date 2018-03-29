@@ -1,0 +1,14 @@
+@import 'var.css';
+
+.tree {
+  list-style: none;
+  margin-top: 2px solid $blue;
+}
+
+.tree__item {
+  margin-bottom: 5px;
+}
+
+.tree__item[href$="file"] {
+  color: $green;
+}

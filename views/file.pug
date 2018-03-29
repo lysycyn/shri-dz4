@@ -9,4 +9,4 @@ block content
       each breadcrumb in breadcrumbs
         a.breadcrumbs__link(href=`/tree/${encodeURIComponent(branch)}/${commit}/${breadcrumb.path}`)= breadcrumb.name
     a.breadcrumbs__link #{fileName}
-  p #{data}
+  p.file-content #{data}

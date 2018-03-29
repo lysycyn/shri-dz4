@@ -2,6 +2,8 @@ import './scripts';
 import './styles/index.css';
 import './styles/breadcrumbs.css';
 import './styles/branches.css';
+import './styles/commits.css';
+import './styles/tree.css';
 import './favicon.ico';
 
-console.log('let\'s do it'); //eslint-disable-line
+console.log('Запуск скрипта'); //eslint-disable-line

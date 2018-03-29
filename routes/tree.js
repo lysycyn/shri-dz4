@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const makeExec = require('../utils/makeExec');
-const { getFileNameFromPath, getTree, getBreadcrumbs } = require('../utils/helpers');
+const { getFileNameFromPath, getTreeFromString, getBreadcrumbs } = require('../utils/helpers');
 
 /**
  * Роутер для отображения файлов, директорий и просмотра содержимого файла
@@ -23,25 +23,28 @@ router.get('/:branch/:commit/:path?', (req, res) => {
       const decodePath = decodeURIComponent(path);
       const fileName = getFileNameFromPath(decodePath);
       const breadcrumbs = getBreadcrumbs(decodePath).slice(0, -1);
+      const title = 'File';
       res.render('file', {
-        branch, commit, fileName, data, breadcrumbs,
+        title, branch, commit, fileName, data, breadcrumbs,
       });
     });
   } else if (path) {
     makeExec(`git ls-tree ${commit} ${decodeURIComponent(path)}/`).then((data) => {
-      const tree = getTree(data);
+      const tree = getTreeFromString(data);
       const breadcrumbs = getBreadcrumbs(path);
+      const title = 'Tree';
       res.render('tree', {
-        branch, tree, breadcrumbs, commit,
+        title, branch, tree, breadcrumbs, commit,
       });
     }).catch((e) => {
       console.error(e); // eslint-disable-line
     });
   } else {
     makeExec(`git ls-tree ${commit}`).then((data) => {
-      const tree = getTree(data);
+      const tree = getTreeFromString(data);
+      const title = 'Tree';
       res.render('tree', {
-        branch, tree, commit,
+        title, branch, tree, commit,
       });
     }).catch((e) => {
       console.error(e); // eslint-disable-line

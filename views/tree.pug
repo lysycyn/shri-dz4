@@ -8,10 +8,10 @@ block content
     if (breadcrumbs)
       each breadcrumb in breadcrumbs
         a.breadcrumbs__link(href=`/tree/${encodeURIComponent(branch)}/${commit}/${breadcrumb.path}`)= breadcrumb.name
-  ul
-  each node in tree
-    li
-      if (node.type === 'tree')
-        a(href=`/tree/${encodeURIComponent(branch)}/${commit}/${encodeURIComponent(node.path)}`)= node.name
-      if (node.type === 'blob')
-        a(href=`/tree/${encodeURIComponent(branch)}/${commit}/${encodeURIComponent(node.path)}?file`)= node.name
+  ul.tree
+    each node in tree
+      li
+        if (node.type === 'tree')
+          a.tree__item(href=`/tree/${encodeURIComponent(branch)}/${commit}/${encodeURIComponent(node.path)}`)= node.name
+        if (node.type === 'blob')
+          a.tree__item(href=`/tree/${encodeURIComponent(branch)}/${commit}/${encodeURIComponent(node.path)}?file`)= node.name

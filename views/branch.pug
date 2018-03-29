@@ -5,7 +5,7 @@ block content
   div.breadcrumbs
     a.breadcrumbs__link(href='/') branches
     a.breadcrumbs__link(href=`/branch/${branch}`) branch "#{branch}"
-  ul
-  each commit, index in commits
-    li
-      a(href=`/tree/${encodeURIComponent(branch)}/${commit.hash}`) #{commit.message} by #{commit.author} (#{commit.date})
+  ul.commits-list
+    each commit, index in commits
+      li
+        a.commits-list__item(href=`/tree/${encodeURIComponent(branch)}/${commit.hash}`) #{commit.message} by #{commit.author} (#{commit.date})
