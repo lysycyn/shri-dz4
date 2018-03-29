@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 const assert = require('assert');
 
-describe('Cтраница дерева файлов коммитов', () => {
+describe('Cтраница отображения файлов и папок комита', () => {
   beforeEach(function test() {
     return this.browser
       .url('/')
@@ -10,7 +10,7 @@ describe('Cтраница дерева файлов коммитов', () => {
       .click('.commits-list__item');
   });
 
-  it('Проверка title страницы отображения дерева', function () {
+  it('Проверка title страницы', function () {
     return this.browser
       .title()
       .then((title) => {

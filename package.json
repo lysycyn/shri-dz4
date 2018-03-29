@@ -9,7 +9,6 @@
     "lint": "eslint ./ && stylelint \"src/*.css\"",
     "lint:css": "stylelint \"**/*.css\"",
     "lint:js": "eslint ./",
-    "test:start": "export NODE_ENV=test&& node ./bin/www",
     "test:unit": "nyc mocha tests/unit/*",
     "test:hermione": "hermione",
     "precommit": "npm run lint"
